@@ -12,12 +12,12 @@ As any todo application, this one implements the following functionality:
 * Edit a todo or mark a todo as done
 * Delete a todo
 
-One feature we've left out as an exercise is making this Flask todo app force  users to complete their tasks. In time.
+_Note_: when editing a todo, a `PUT` request is sent after each typed character. How can I change this so the request is sent only once when Enter is pressed?
 
 # Complete stack #
 
 * [Bottle](http://bottlepy.org/)
-* [Ember](http://emberjs.com)
+* [Ember (v1.0.0-pre.4-9-g6f709b0)](http://emberjs.com)
 * [RethinkDB](http://www.rethinkdb.com)
 
 # Installation #
