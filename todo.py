@@ -51,6 +51,8 @@ def dbSetup():
 
 @bottle.hook('before_request')
 def before_request():
+    if request.path.startswith('/static/'):
+        return
     try:
         bottle.local.rdb_connection  = r.connect(host=RDB_HOST, port=RDB_PORT, db_name=TODO_DB)
     except socket.error:
@@ -59,6 +61,8 @@ def before_request():
 
 @bottle.hook('after_request')
 def after_request():
+    if request.path.startswith('/static/'):
+        return
     bottle.local.rdb_connection.close()
 
 #### Listing existing todos
