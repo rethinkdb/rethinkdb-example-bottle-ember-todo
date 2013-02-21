@@ -12,7 +12,7 @@ As any todo application, this one implements the following functionality:
 * Edit a todo or mark a todo as done
 * Delete a todo
 
-_Outstanding issues_: When editing a todo, a `PUT` request is sent after each typed character. This could be improved to send a request is only once when Enter is pressed (pull requests welcome!)
+_Open issues_: when editing a todo, a `PUT` request is sent after each typed character. This could be improved to send a request is only once when Enter is pressed (pull requests welcome!)
 
 # Complete stack #
 
