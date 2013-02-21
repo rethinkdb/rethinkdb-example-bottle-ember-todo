@@ -67,7 +67,7 @@ def after_request():
 
 #### Listing existing todos
 
-# To retrieve all existing tasks, we are using
+# To retrieve all existing tasks, we use the
 # [`r.table`](http://www.rethinkdb.com/api/#py:selecting_data-table)
 # command to query the database in response to a GET request from the
 # browser. When `table(table_name)` isn't followed by an additional
