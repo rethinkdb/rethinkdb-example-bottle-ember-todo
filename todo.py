@@ -13,7 +13,7 @@ import socket
 import bottle
 from bottle import static_file, request
 
-from rethinkdb import r
+import rethinkdb as r
 
 #### Connection details
 
