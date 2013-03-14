@@ -14,10 +14,7 @@ import bottle
 from bottle import static_file, request
 
 import rethinkdb as r
-<<<<<<< HEAD
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
-=======
->>>>>>> master
 
 #### Connection details
 
