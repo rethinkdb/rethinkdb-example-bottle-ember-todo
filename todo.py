@@ -13,7 +13,8 @@ import socket
 import bottle
 from bottle import static_file, request
 
-from rethinkdb import r
+import rethinkdb as r
+from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
 #### Connection details
 
@@ -33,10 +34,10 @@ TODO_DB = os.getenv('TODO_DB', 'todoapp')
 def dbSetup():
     connection = r.connect(host=RDB_HOST, port=RDB_PORT)
     try:
-        connection.run(r.db_create(TODO_DB))
-        connection.run(r.db(TODO_DB).table_create('todos'))
+        r.db_create(TODO_DB).run(connection)
+        r.db(TODO_DB).table_create('todos').run(connection)
         print 'Database setup completed. Now run the app without --setup: `python todo.py`'
-    except Exception:
+    except RqlRuntimeError:
         print 'App database already exists. Run the app without --setup: `python todo.py`'
     finally:
         connection.close()
@@ -54,10 +55,9 @@ def before_request():
     if request.path.startswith('/static/'):
         return
     try:
-        bottle.local.rdb_connection  = r.connect(host=RDB_HOST, port=RDB_PORT, db_name=TODO_DB)
-    except socket.error:
-        raise EnvironmentError("Cannot connect to RethinkDB database {host: %s, port: %s, db_name: %s}" %
-            (RDB_HOST, RDB_PORT, TODO_DB))
+        bottle.local.rdb_connection  = r.connect(RDB_HOST, RDB_PORT, TODO_DB)
+    except RqlDriverError:
+        bottle.abort(503, "No database connection could be established.")
 
 @bottle.hook('after_request')
 def after_request():
