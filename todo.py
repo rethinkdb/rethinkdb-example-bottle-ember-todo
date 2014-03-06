@@ -88,7 +88,15 @@ def get_todos():
 #
 # The `insert` operation returns a single object specifying the number
 # of successfully created objects and their corresponding IDs:
-# `{ "inserted": 1, "errors": 0, "generated_keys": ["773666ac-841a-44dc-97b7-b6f3931e9b9f"] }`
+# ```
+# {
+#   "inserted": 1,
+#   "errors": 0,
+#   "generated_keys": [
+#     "773666ac-841a-44dc-97b7-b6f3931e9b9f"
+#   ]
+# }
+# ```
 @bottle.post("/todos")
 def new_todo():
     todo = request.json['todo']
