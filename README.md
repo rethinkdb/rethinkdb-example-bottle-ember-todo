@@ -1,6 +1,6 @@
 # What is it #
 
-A demo web application in the spirit of [TodoMVC](http://addyosmani.github.com/todomvc/) showing how to use 
+A demo web application in the spirit of [TodoMVC](http://todomvc.com/) showing how to use
 **RethinkDB as a backend for Bottle and Ember.js applications**.
 
 As any todo application, this one implements the following functionality:
