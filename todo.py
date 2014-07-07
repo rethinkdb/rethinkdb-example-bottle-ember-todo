@@ -36,9 +36,11 @@ def dbSetup():
     try:
         r.db_create(TODO_DB).run(connection)
         r.db(TODO_DB).table_create('todos').run(connection)
-        print 'Database setup completed. Now run the app without --setup: `python todo.py`'
+        print ('Database setup completed. Now run the app without --setup: '
+               '`python todo.py`')
     except RqlRuntimeError:
-        print 'App database already exists. Run the app without --setup: `python todo.py`'
+        print ('App database already exists. Run the app without --setup: '
+               '`python todo.py`')
     finally:
         connection.close()
 
@@ -55,7 +57,8 @@ def before_request():
     if request.path.startswith('/static/'):
         return
     try:
-        bottle.local.rdb_connection  = r.connect(RDB_HOST, RDB_PORT, TODO_DB)
+        bottle.local.rdb_connection  = r.connect(RDB_HOST, RDB_PORT,
+                                                 TODO_DB)
     except RqlDriverError:
         bottle.abort(503, "No database connection could be established.")
 
@@ -101,7 +104,8 @@ def get_todos():
 @bottle.post("/todos")
 def new_todo():
     todo = request.json['todo']
-    inserted = r.table('todos').insert(todo).run(bottle.local.rdb_connection)
+    inserted = (r.table('todos').insert(todo)
+                 .run(bottle.local.rdb_connection))
     todo['id'] = inserted['generated_keys'][0]
     return json.dumps({'todo': todo})
 
@@ -130,7 +134,10 @@ def get_todo(todo_id):
 def update_todo(todo_id):
     todo = {'id': todo_id}
     todo.update(request.json['todo'])
-    return json.dumps(r.table('todos').get(todo_id).replace(todo).run(bottle.local.rdb_connection))
+    return json.dumps(r.table('todos')
+                       .get(todo_id)
+                       .replace(todo)
+                       .run(bottle.local.rdb_connection))
 
 # If you'd like the update operation to happen as the result of a
 # `PATCH` request (carrying only the updated fields), you can use the
@@ -139,7 +146,10 @@ def update_todo(todo_id):
 # with the new one.
 @bottle.route("/todos/<todo_id>", method='PATCH')
 def patch_todo(todo_id):
-    return json.dumps(r.table('todos').get(todo_id).update(request.json['todo']).run(bottle.local.rdb_connection))
+    return json.dumps(r.table('todos')
+                       .get(todo_id)
+                       .update(request.json['todo'])
+                       .run(bottle.local.rdb_connection))
 
 
 #### Deleting a task
@@ -149,11 +159,15 @@ def patch_todo(todo_id):
 # command on a `DELETE /todos/<todo_id>` request.
 @bottle.delete("/todos/<todo_id>")
 def delete_todo(todo_id):
-    return json.dumps(r.table('todos').get(todo_id).delete().run(bottle.local.rdb_connection))
+    return json.dumps(r.table('todos')
+                       .get(todo_id)
+                       .delete()
+                       .run(bottle.local.rdb_connection))
 
 @bottle.get("/")
 def show_todos():
-    return static_file('todo.html', root='templates/', mimetype='text/html')
+    return static_file('todo.html', root='templates/',
+                       mimetype='text/html')
 
 @bottle.route('/static/<filename:path>', method='GET')
 @bottle.route('/static/<filename:path>', method='HEAD')
